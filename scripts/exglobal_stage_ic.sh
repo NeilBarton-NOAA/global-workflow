@@ -77,8 +77,10 @@ for MEMDIR in "${MEMDIR_ARRAY[@]}"; do
   if [[ "${DO_OCN:-}" = "YES" ]]; then
     RUN=${rCDUMP} YMD=${gPDY} HH=${gcyc} generate_com COM_OCEAN_RESTART_PREV:COM_OCEAN_RESTART_TMPL
     [[ ! -d "${COM_OCEAN_RESTART_PREV}" ]] && mkdir -p "${COM_OCEAN_RESTART_PREV}"
-    src="${BASE_CPLIC}/${CPL_OCNIC:-}/${PDY}${cyc}/${MEMDIR}/ocean/${PDY}.${cyc}0000.MOM.res.nc"
-    tgt="${COM_OCEAN_RESTART_PREV}/${PDY}.${cyc}0000.MOM.res.nc"
+    #src="${BASE_CPLIC}/${CPL_OCNIC:-}/${PDY}${cyc}/${MEMDIR}/ocean/${PDY}.${cyc}0000.MOM.res.nc"
+    #tgt="${COM_OCEAN_RESTART_PREV}/${PDY}.${cyc}0000.MOM.res.nc"
+    src="${BASE_CPLIC}/${CPL_OCNIC:-}/${PDY}${cyc}/${MEMDIR}/ocean/ORAS5.mx${OCNRES}.ic.nc"
+    tgt="${COM_OCEAN_RESTART_PREV}/ORAS5.mx${OCNRES}.ic.nc"
     ${NCP} "${src}" "${tgt}"
     rc=$?
     ((rc != 0)) && error_message "${src}" "${tgt}" "${rc}"
@@ -88,14 +90,15 @@ for MEMDIR in "${MEMDIR_ARRAY[@]}"; do
         # Nothing more to do for these resolutions
         ;;
       "025" )
-        for nn in $(seq 1 3); do
-          src="${BASE_CPLIC}/${CPL_OCNIC:-}/${PDY}${cyc}/${MEMDIR}/ocean/${PDY}.${cyc}0000.MOM.res_${nn}.nc"
-          tgt="${COM_OCEAN_RESTART_PREV}/${PDY}.${cyc}0000.MOM.res_${nn}.nc"
-          ${NCP} "${src}" "${tgt}"
-          rc=$?
-          ((rc != 0)) && error_message "${src}" "${tgt}" "${rc}"
-          err=$((err + rc))
-        done
+        # Nothing to do for ORAS5 initialization
+        #for nn in $(seq 1 3); do
+        #  src="${BASE_CPLIC}/${CPL_OCNIC:-}/${PDY}${cyc}/${MEMDIR}/ocean/${PDY}.${cyc}0000.MOM.res_${nn}.nc"
+        #  tgt="${COM_OCEAN_RESTART_PREV}/${PDY}.${cyc}0000.MOM.res_${nn}.nc"
+        #  ${NCP} "${src}" "${tgt}"
+        #  rc=$?
+        #  ((rc != 0)) && error_message "${src}" "${tgt}" "${rc}"
+        #  err=$((err + rc))
+        #done
         ;;
       *)
         echo "FATAL ERROR: Unsupported ocean resolution ${OCNRES}"

@@ -5,3 +5,5 @@ base:
   DO_JEDILANDDA: "NO"
   DO_MERGENSST: "NO"
   FHMAX_GFS: 120
+  BASE_CPLIC: "/scratch2/NCEPDEV/stmp3/Neil.Barton/ICs"
+

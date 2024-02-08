@@ -679,16 +679,17 @@ MOM6_postdet() {
   echo "SUB ${FUNCNAME[0]}: MOM6 after run type determination"
 
   # Copy MOM6 ICs
-  ${NLN} "${COM_OCEAN_RESTART_PREV}/${sPDY}.${scyc}0000.MOM.res.nc" "${DATA}/INPUT/MOM.res.nc"
-  case ${OCNRES} in
-    "025")
-      for nn in $(seq 1 4); do
-        if [[ -f "${COM_OCEAN_RESTART_PREV}/${sPDY}.${scyc}0000.MOM.res_${nn}.nc" ]]; then
-          ${NLN} "${COM_OCEAN_RESTART_PREV}/${sPDY}.${scyc}0000.MOM.res_${nn}.nc" "${DATA}/INPUT/MOM.res_${nn}.nc"
-        fi
-      done
-    ;;
-  esac
+  ${NLN} "${COM_OCEAN_RESTART_PREV}/ORAS5.mx${OCNRES}.ic.nc" "${DATA}/INPUT/ORAS5.mx${OCNRES}.ic.nc"
+  #${NLN} "${COM_OCEAN_RESTART_PREV}/${sPDY}.${scyc}0000.MOM.res.nc" "${DATA}/INPUT/MOM.res.nc"
+  #case ${OCNRES} in
+  #  "025")
+  #    for nn in $(seq 1 4); do
+  #      if [[ -f "${COM_OCEAN_RESTART_PREV}/${sPDY}.${scyc}0000.MOM.res_${nn}.nc" ]]; then
+  #        ${NLN} "${COM_OCEAN_RESTART_PREV}/${sPDY}.${scyc}0000.MOM.res_${nn}.nc" "${DATA}/INPUT/MOM.res_${nn}.nc"
+  #      fi
+  #    done
+  #  ;;
+  #esac
 
   # Link increment
   if [[ "${DO_JEDIOCNVAR:-NO}" = "YES" ]]; then

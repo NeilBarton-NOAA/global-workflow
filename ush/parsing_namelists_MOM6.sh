@@ -117,6 +117,24 @@ atparse < "${template}" >> "${DATA}/INPUT/MOM_input"
 echo "Rendered MOM_input:"
 cat "${DATA}/INPUT/MOM_input"
 
+#ORAS5
+ln=$(grep -wn "Z-space file on a latitude-longitude grid." ${DATA}/INPUT/MOM_input | cut -d: -f1) && ln=$(( ln + 1 ))
+sed -i "${ln} i  THICKNESS_CONFIG        = 'thickness_file'" ${DATA}/INPUT/MOM_input && ln=$(( ln + 1 ))
+sed -i "${ln} i  THICKNESS_FILE          = 'ORAS5.mx025.ic.nc'" ${DATA}/INPUT/MOM_input && ln=$(( ln + 1 ))
+sed -i "${ln} i  TS_CONFIG               = 'file'" ${DATA}/INPUT/MOM_input && ln=$(( ln + 1 ))
+sed -i "${ln} i  TS_FILE                 = 'ORAS5.mx025.ic.nc'" ${DATA}/INPUT/MOM_input && ln=$(( ln + 1 ))
+sed -i "${ln} i  TEMP_IC_VAR             = 'Temp'" ${DATA}/INPUT/MOM_input && ln=$(( ln + 1 ))
+sed -i "${ln} i  VELOCITY_CONFIG         = 'file'" ${DATA}/INPUT/MOM_input && ln=$(( ln + 1 ))
+sed -i "${ln} i  VELOCITY_FILE           = 'ORAS5.mx025.ic.nc'" ${DATA}/INPUT/MOM_input
+sed -i "s:PARALLEL_RESTARTFILES = True:PARALLEL_RESTARTFILES = False:g" ${DATA}/INPUT/MOM_input 
+sed -i "s:INIT_LAYERS_FROM_Z_FILE = True:INIT_LAYERS_FROM_Z_FILE = False:g" ${DATA}/INPUT/MOM_input
+sed -i 's:TEMP_SALT_Z_INIT_FILE = "MOM6_IC_TS.nc":!TEMP_SALT_Z_INIT_FILE = "ORAS5.mx025.ic.nc":g' ${DATA}/INPUT/MOM_input
+sed -i 's:Z_INIT_FILE_PTEMP_VAR = "temp":!Z_INIT_FILE_PTEMP_VAR = "temp":g' ${DATA}/INPUT/MOM_input
+sed -i 's:Z_INIT_FILE_SALT_VAR = "salt":!Z_INIT_FILE_SALT_VAR = "salt":g' ${DATA}/INPUT/MOM_input
+sed -i 's:Z_INIT_ALE_REMAPPING = True:!Z_INIT_ALE_REMAPPING = True:g' ${DATA}/INPUT/MOM_input
+sed -i 's:Z_INIT_REMAP_OLD_ALG = True:!Z_INIT_REMAP_OLD_ALG = True:g' ${DATA}/INPUT/MOM_input
+
+
 # ================================================================
 # data_table
 # ----------

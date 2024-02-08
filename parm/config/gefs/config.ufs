@@ -172,7 +172,7 @@ case "${fv3_res}" in
         export layout_y=8
         export layout_x_gfs=8
         export layout_y_gfs=8
-        export nthreads_fv3=1
+        export nthreads_fv3=2
         export nthreads_fv3_gfs=2
         export cdmbgwd="1.1,0.72,1.0,1.0"  # mountain blocking, ogwd, cgwd, cgwd src scaling
         export cdmbgwd_gsl="5.0,5.0,1.0,1.0"   # settings for GSL drag suite
@@ -363,7 +363,7 @@ if [[ "${skip_mom6}" == "false" ]]; then
       FRUNOFF="runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc"
       CHLCLIM="seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc"
       MOM6_RIVER_RUNOFF='True'
-      MOM6_RESTART_SETTING="r"
+      MOM6_RESTART_SETTING="n"
       eps_imesh="1.0e-1"
       if [[ "${DO_JEDIOCNVAR:-NO}" = "YES" ]]; then
         MOM6_DIAG_COORD_DEF_Z_FILE="oceanda_zgrid_75L.nc"
@@ -422,7 +422,7 @@ if [[ "${skip_cice6}" == "false" ]]; then
       cice6_processor_shape="slenderX2"
       ;;
     "025")
-      ntasks_cice6=120
+      ntasks_cice6=72
       cice6_processor_shape="slenderX2"
       ;;
     *)

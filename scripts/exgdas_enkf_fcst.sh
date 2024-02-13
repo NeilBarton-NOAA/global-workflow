@@ -84,7 +84,7 @@ fi
 # gfs_physics_nml
 export FHSWR=${FHSWR_ENKF:-${FHSWR:-3600.}}
 export FHLWR=${FHLWR_ENKF:-${FHLWR:-3600.}}
-export IEMS=${IEMS_ENKF:-${IEMS:-1}}
+export IEMS=${IEMS_ENKF:-${IEMS:-2}}
 export ISOL=${ISOL_ENKF:-${ISOL:-2}}
 export IAER=${IAER_ENKF:-${IAER:-111}}
 export ICO2=${ICO2_ENKF:-${ICO2:-2}}

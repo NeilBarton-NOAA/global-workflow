@@ -242,12 +242,12 @@ EOF
       MM=$(printf %02d "${month}")
       ${NLN} "${FIXaer}/merra2.aerclim.2003-2014.m${MM}.nc" "aeroclim.m${MM}.nc"
     done
-    ${NLN} "${FIXlut}/optics_BC.v1_3.dat"  "${DATA}/optics_BC.dat"
-    ${NLN} "${FIXlut}/optics_OC.v1_3.dat"  "${DATA}/optics_OC.dat"
-    ${NLN} "${FIXlut}/optics_DU.v15_3.dat" "${DATA}/optics_DU.dat"
-    ${NLN} "${FIXlut}/optics_SS.v3_3.dat"  "${DATA}/optics_SS.dat"
-    ${NLN} "${FIXlut}/optics_SU.v1_3.dat"  "${DATA}/optics_SU.dat"
   fi
+  ${NLN} "${FIXlut}/optics_BC.v1_3.dat"  "${DATA}/optics_BC.dat"
+  ${NLN} "${FIXlut}/optics_OC.v1_3.dat"  "${DATA}/optics_OC.dat"
+  ${NLN} "${FIXlut}/optics_DU.v15_3.dat" "${DATA}/optics_DU.dat"
+  ${NLN} "${FIXlut}/optics_SS.v3_3.dat"  "${DATA}/optics_SS.dat"
+  ${NLN} "${FIXlut}/optics_SU.v1_3.dat"  "${DATA}/optics_SU.dat"
 
   ${NLN} "${FIXam}/global_co2historicaldata_glob.txt" "${DATA}/co2historicaldata_glob.txt"
   ${NLN} "${FIXam}/co2monthlycyc.txt"                 "${DATA}/co2monthlycyc.txt"
@@ -433,22 +433,44 @@ EOF
 
   # Stochastic Physics Options
   if [[ ${SET_STP_SEED:-"YES"} = "YES" ]]; then
-    ISEED_SKEB=$((current_cycle*1000 + MEMBER*10 + 1))
+    ISEED_SPPT=$((CDATE*10000 + ${MEMBER#0}*100 + 3)),$((CDATE*10000 + ${MEMBER#0}*100 + 4)),$((CDATE*10000 + ${MEMBER#0}*100 + 5)),$((CDATE*10000 + ${MEMBER#0}*100 + 6)),$((CDATE*10000 + ${MEMBER#0}*100 + 7))
+    ISEED_CA=$(( (CDATE*10000 + ${MEMBER#0}*100 + 18) % 2147483647 )) 
+    ISEED_SKEB=0
     ISEED_SHUM=$((current_cycle*1000 + MEMBER*10 + 2))
-    ISEED_SPPT=$((current_cycle*1000 + MEMBER*10 + 3))
-    ISEED_CA=$(( (current_cycle*1000 + MEMBER*10 + 4) % 2147483647 ))
     ISEED_LNDP=$(( (current_cycle*1000 + MEMBER*10 + 5) % 2147483647 ))
   else
     ISEED=${ISEED:-0}
   fi
   if [[ ${DO_SKEB} = "YES" ]]; then
     do_skeb=".true."
+    SKEB=${SKEB:-0.8,-999,-999,-999,-999}
+    iseed_skeb=${ISEED_SKEB}
+    SKEB_TAU=${SKEB_TAU:-2.16E4,1.728E5,2.592E6,7.776E6,3.1536E7}
+    SKEB_LSCALE=${SKEB_LSCALE:-500.E3,1000.E3,2000.E3,2000.E3,2000.E3}
+    SKEBNORM=${SKEBNORM:-1}
   fi
   if [[ ${DO_SPPT} = "YES" ]]; then
     do_sppt=".true."
+    SPPT=${SPPT:-0.56,0.28,0.14,0.056,0.028}
+    iseed_sppt=${ISEED_SPPT}
+    SPPT_TAU=${SPPT_TAU:-2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7}
+    SPPT_LSCALE=${SPPT_LSCALE:-500.E3,1000.E3,2000.E3,2000.E3,2000.E3}
+    sppt_logit=.TRUE.
+    sppt_sfclimit=.true.
+    use_zmtnlck=.true.
   fi
   if [[ ${DO_SHUM} = "YES" ]]; then
     do_shum=".true."
+  fi
+  if [[ ${DO_OCN_SPPT} = "YES" ]]; then
+    OCNSPPT=${OCNSPPT:-0.8,0.4,0.2,0.08,0.04}
+    OCNSPPT_TAU=${OCNSPPT_TAU:-2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7}
+    OCNSPPT_LSCALE=${OCNSPPT_LSCALE:-500.E3,1000.E3,2000.E3,2000.E3,2000.E3}
+  fi
+  if [[ ${DO_OCN_PERT_EPBL} = "YES" ]]; then
+    EPBL=${EPBL:-0.8,0.4,0.2,0.08,0.04}
+    EPBL_TAU=${EPBL_TAU:-2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7}
+    EPBL_LSCALE=${EPBL_LSCALE:-500.E3,1000.E3,2000.E3,2000.E3,2000.E3}
   fi
   if [[ ${DO_LAND_PERT} = "YES" ]]; then
     lndp_type=${lndp_type:-2}
@@ -695,6 +717,10 @@ MOM6_postdet() {
       ${NLN} "${COM_OCEAN_ANALYSIS}/${RUN}.t${cyc}z.ocninc.nc" "${DATA}/INPUT/mom6_increment.nc"
   fi
 
+  if [[ "${DO_OCN_SPPT}" == "YES" ]]; then
+    ${NLN} "${COM_OCEAN_RESTART_PREV}/${sPDY}.${scyc}0000.mom6_increment.nc" "${DATA}/INPUT/mom6_increment.nc"
+  fi
+
   # Copy MOM6 fixed files
   ${NCP} "${FIXmom}/${OCNRES}/"* "${DATA}/INPUT/"  # TODO: These need to be explicit
 
@@ -711,8 +737,8 @@ MOM6_postdet() {
   # largest signed integer
   if [[ "${DO_OCN_SPPT}" = "YES" ]] || [[ "${DO_OCN_PERT_EPBL}" = "YES" ]]; then
     if [[ ${SET_STP_SEED:-"YES"} = "YES" ]]; then
-      ISEED_OCNSPPT=$(( (current_cycle*1000 + MEMBER*10 + 6) % 2147483647 ))
-      ISEED_EPBL=$(( (current_cycle*1000 + MEMBER*10 + 7) % 2147483647 ))
+      ISEED_OCNSPPT=$((CDATE*10000 + ${MEMBER#0}*100 + 8)),$((CDATE*10000 + ${MEMBER#0}*100 + 9)),$((CDATE*10000 + ${MEMBER#0}*100 + 10)),$((CDATE*10000 + ${MEMBER#0}*100 + 11)),$((CDATE*10000 + ${MEMBER#0}*100 + 12))
+      ISEED_EPBL=$((CDATE*10000 + ${MEMBER#0}*100 + 13)),$((CDATE*10000 + ${MEMBER#0}*100 + 14)),$((CDATE*10000 + ${MEMBER#0}*100 + 15)),$((CDATE*10000 + ${MEMBER#0}*100 + 16)),$((CDATE*10000 + ${MEMBER#0}*100 + 17))
     else
       ISEED=${ISEED:-0}
     fi
@@ -926,6 +952,11 @@ GOCART_rc() {
       if (( status != 0 )); then exit "${status}"; fi
     fi
   fi
+
+  if [[ ${BLENDED_WILDFIRE_EMISSIONS} == T ]]; then
+    fire_org='ExtData/nexus/QFED/%y4/%m2/qfed2.emis_so2.006.%y4%m2%d2.nc4'
+    sed -i "s:${fire_org}:${fire_out}:g" ${DATA}/AERO_ExtData.rc
+  fi
 }
 
 GOCART_postdet() {
@@ -939,6 +970,26 @@ GOCART_postdet() {
       rm -f "${COM_CHEM_HISTORY}/gocart.inst_aod.${vdate:0:8}_${vdate:8:2}00z.nc4"
     fi
 
+    # Blended Wildire Emissions
+    BLENDED_WILDFIRE_EMISSIONS=${BLENDED_WILDFIRE_EMISSIONS:-F}
+    if [[ ${BLENDED_WILDFIRE_EMISSIONS} == T ]]; then
+        local EMISSION_DIR=/scratch1/RDARCH/rda-arl-gpu/Barry.Baker/emissions/nexus/GBBEPx/v4/climMean
+        local fhmax_day=$(( ${FHMAX_GFS} / 24 ))
+        local fire_in="/scratch1/RDARCH/rda-arl-gpu/Barry.Baker/emissions/nexus/QFED/${vdate:0:4}/${vdate:4:2}/qfed2.emis_*.${PDY}.nc4"
+        fire_out="${COM_TOP}/mem000/model_data/chem/input/QFED_Blended_${PDY}_${fhmax_day}.nc"
+        if [[ ! -f ${fire_out} ]]; then
+            set +x
+            module purge
+            source ~Neil.Barton/.profile
+            set -x
+            mkdir -p $(dirname ${fire_out})
+            ${HOMEgfs}/ush/gefs_fireclimo_blend.py -s ${PDY} -n ${fhmax_day} -c ${EMISSION_DIR} -f ${fire_in} -o ${fire_out} -r 0.95
+            source ${HOMEgfs}/ush/load_fv3gfs_modules.sh
+
+    
+        fi
+    fi
+    
     #To Do: Temporarily removing this as this will crash gocart, adding copy statement at the end
     #${NLN} "${COM_CHEM_HISTORY}/gocart.inst_aod.${vdate:0:8}_${vdate:8:2}00z.nc4" \
     #       "${DATA}/gocart.inst_aod.${vdate:0:8}_${vdate:8:2}00z.nc4"

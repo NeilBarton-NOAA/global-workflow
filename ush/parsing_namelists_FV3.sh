@@ -383,6 +383,14 @@ cat >> input.nml <<EOF
   cplwav2atm   = ${cplwav2atm:-".false."}
 EOF
 
+if [ ${DO_SPPT} = "YES" ];then
+cat >> input.nml <<EOF
+  pert_mp = .false.  
+  pert_radtend = .false.
+  pert_clds = .true.
+EOF
+fi
+
 # Add namelist for IAU
 if [[ ${DOIAU} = "YES" ]]; then
   cat >> input.nml << EOF
@@ -596,14 +604,14 @@ EOF
   skeb_tau = ${SKEB_TAU:-"-999."}
   skeb_lscale = ${SKEB_LSCALE:-"-999."}
   skebnorm = ${SKEBNORM:-"1"}
-  skeb_npass = ${SKEB_nPASS:-"30"}
+  skeb_npass = ${SKEB_NPASS:-"30"}
   skeb_vdof = ${SKEB_VDOF:-"5"}
 EOF
   fi
 
   if [[ ${DO_SHUM} = "YES" ]]; then
     cat >> input.nml << EOF
-  shum = ${SHUM}
+  shum = ${SHUM:-"0.005"}
   iseed_shum = ${ISEED_SHUM:-${ISEED}}
   shum_tau = ${SHUM_TAU:-"-999."}
   shum_lscale = ${SHUM_LSCALE:-"-999."}
@@ -619,7 +627,29 @@ EOF
   sppt_logit = ${SPPT_LOGIT:-".true."}
   sppt_sfclimit = ${SPPT_SFCLIMIT:-".true."}
   use_zmtnblck = ${use_zmtnblck:-".true."}
+  pbl_taper = ${pbl_taper:-"0,0,0,0.125,0.25,0.5,0.75"}
 EOF
+
+  fi
+
+  if [[ "${DO_OCN_SPPT}" == "YES" ]]; then
+    cat >> input.nml <<EOF
+  OCNSPPT=${OCNSPPT:-1.0}
+  OCNSPPT_LSCALE=${OCNSPPT_LSCALE:-500e3}
+  OCNSPPT_TAU=${OCNSPPT_TAU:-21600}
+  ISEED_OCNSPPT=${ISEED_OCNSPPT:-${ISEED}}
+EOF
+ 
+  fi
+
+  if [[ "${DO_OCN_PERT_EPBL}" == "YES" ]]; then
+    cat >> input.nml <<EOF
+  EPBL=${EPBL:-1.0}
+  EPBL_LSCALE=${EPBL_LSCALE:-500e3}
+  EPBL_TAU=${EPBL_TAU:-21600}
+  ISEED_EPBL=${ISEED_EPBL:-${ISEED}}
+EOF
+
   fi
 
   cat >> input.nml << EOF

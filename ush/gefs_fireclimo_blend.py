@@ -10,9 +10,9 @@ def open_qfed(fname):
     vrs = ['BC','CH4','CO','CO2','NH3','NOx','OC','PM2.5','SO2']
     qfed_vars = ['bc','ch4','co','co2','nh3','no','oc','pm25','so2']
     das = []
-  #  print(fname)
-
     
+    print('')
+    print('Opening QFED Files...')
     if len(fname) > 1:
         files = sort(fname)
     else:
@@ -21,18 +21,37 @@ def open_qfed(fname):
     for v in files:
         good = [ i for i in qfed_vars if i in v]
         if good:
-            print('opening:',v,good)
+            print('  opening:',v,good)
             dset = xr.open_dataset(v,decode_cf=False)
             var_index = vrs[qfed_vars.index(good[0])] # variable index
             da = dset['biomass']
             das.append(da)
-#    print(len(das))
     dset_dict = {}
     for index,v in enumerate(vrs):
- #       print(index,v)
         dset_dict[v] = das[index]
     dset = xr.Dataset(dset_dict)
     return dset
+
+def open_climatology(fname):
+    from glob import glob
+    from numpy import sort
+    
+    # array to house datasets
+    das = [] 
+    print('')
+    print('Opening Climatology Files...')
+    
+    if len(fname) > 1:
+        files = sort(fname)
+    else:
+        files = sort(glob(fname))
+    #print(files)
+    xr.open_dataset(files[0])
+    for i,f in enumerate(files):
+        print('  opening:',f)
+        das.append(xr.open_dataset(f, engine='netcdf4'))
+
+    return xr.concat(das, dim='time')
 
 
 def write_ncf(dset, outfile):
@@ -84,7 +103,7 @@ def create_climatology(emissions, climatology, lat_coarse=50, lon_coarse=50):
     ratio = (emissions.squeeze().data / clim_coarse.where(clim_coarse > 0)).fillna(0)
 
     # Interpolate the ratio to match the coordinates of the climatology
-    ratio_interp = ratio.interp(lat=clim.lat, lon=clim.lon, method='nearest')
+    ratio_interp = ratio.sel(lat=clim.lat, lon=clim.lon, method='nearest')
 
     # Loop through each time slice and scale the climatology
     for index, time_slice in enumerate(clim.time):
@@ -146,8 +165,9 @@ def make_fire_emission(d=None, climos=None, ratio=0.9, scale_climo=True, n_forec
     files = [t.strftime('{}/GBBEPx-all01GRID_v4r0_climMean_%m%d.nc'.format(climo_directory)) for t in dates]
 
     # open climo file 
-    climo = xr.open_mfdataset(files)
-    climo = climo.interp(lat=g['lat'],lon=g['lon'])
+    #climo = xr.open_mfdataset(files)
+    climo = open_climatology(files)
+    climo = climo.sel(lat=g['lat'],lon=g['lon'],method='nearest')
 
     # make weighted climo 
     gc = g.coarsen(lat=150,lon=150,boundary='trim').sum()

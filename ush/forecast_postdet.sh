@@ -435,7 +435,7 @@ EOF
   if [[ ${SET_STP_SEED:-"YES"} = "YES" ]]; then
     ISEED_SPPT=$((CDATE*10000 + ${MEMBER#0}*100 + 3)),$((CDATE*10000 + ${MEMBER#0}*100 + 4)),$((CDATE*10000 + ${MEMBER#0}*100 + 5)),$((CDATE*10000 + ${MEMBER#0}*100 + 6)),$((CDATE*10000 + ${MEMBER#0}*100 + 7))
     ISEED_CA=$(( (CDATE*10000 + ${MEMBER#0}*100 + 18) % 2147483647 )) 
-    ISEED_SKEB=0
+    ISEED_SKEB=$((current_cycle*1000 + MEMBER*10 +1))
     ISEED_SHUM=$((current_cycle*1000 + MEMBER*10 + 2))
     ISEED_LNDP=$(( (current_cycle*1000 + MEMBER*10 + 5) % 2147483647 ))
   else
@@ -1054,15 +1054,8 @@ GOCART_postdet() {
         local fire_in="/scratch1/RDARCH/rda-arl-gpu/Barry.Baker/emissions/nexus/QFED/${vdate:0:4}/${vdate:4:2}/qfed2.emis_*.${PDY}.nc4"
         fire_out="${COM_TOP}/mem000/model_data/chem/input/QFED_Blended_${PDY}_${fhmax_day}.nc"
         if [[ ! -f ${fire_out} ]]; then
-            set +x
-            module purge
-            source ~Neil.Barton/.profile
-            set -x
             mkdir -p $(dirname ${fire_out})
-            ${HOMEgfs}/ush/gefs_fireclimo_blend.py -s ${PDY} -n ${fhmax_day} -c ${EMISSION_DIR} -f ${fire_in} -o ${fire_out} -r 0.95
-            source ${HOMEgfs}/ush/load_fv3gfs_modules.sh
-
-    
+            ${HOMEgfs}/ush/gefs_fireclimo_blend.py -s ${PDY} -n ${fhmax_day} -c ${EMISSION_DIR} -f ${fire_in} -o ${fire_out} -r 0.95    
         fi
     fi
     

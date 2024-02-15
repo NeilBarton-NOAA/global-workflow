@@ -1049,9 +1049,9 @@ GOCART_postdet() {
     # Blended Wildire Emissions
     BLENDED_WILDFIRE_EMISSIONS=${BLENDED_WILDFIRE_EMISSIONS:-F}
     if [[ ${BLENDED_WILDFIRE_EMISSIONS} == T ]]; then
-        local EMISSION_DIR=/scratch1/RDARCH/rda-arl-gpu/Barry.Baker/emissions/nexus/GBBEPx/v4/climMean
+        local EMISSION_DIR=${AERO_INPUTS_DIR}/nexus/GBBEPx/v4/climMean
         local fhmax_day=$(( ${FHMAX_GFS} / 24 ))
-        local fire_in="/scratch1/RDARCH/rda-arl-gpu/Barry.Baker/emissions/nexus/QFED/${vdate:0:4}/${vdate:4:2}/qfed2.emis_*.${PDY}.nc4"
+        local fire_in="${AERO_INPUTES_DIR}/nexus/QFED/${vdate:0:4}/${vdate:4:2}/qfed2.emis_*.${PDY}.nc4"
         fire_out="${COM_TOP}/mem000/model_data/chem/input/QFED_Blended_${PDY}_${fhmax_day}.nc"
         if [[ ! -f ${fire_out} ]]; then
             mkdir -p $(dirname ${fire_out})

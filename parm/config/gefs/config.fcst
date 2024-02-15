@@ -21,6 +21,8 @@ string="--fv3 ${CASE}"
 # shellcheck disable=SC2086
 source "${EXPDIR}/config.ufs" ${string}
 
+# Turn on the use of wildfire emissions bleneded to climatology
+export BLENDED_WILDFIRE_EMISSIONS=T
 
 # Get task specific resources
 source "${EXPDIR}/config.resources" fcst

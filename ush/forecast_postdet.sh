@@ -975,7 +975,7 @@ GOCART_postdet() {
     if [[ ${BLENDED_WILDFIRE_EMISSIONS} == T ]]; then
         local EMISSION_DIR=${AERO_INPUTS_DIR}/nexus/GBBEPx/v4/climMean
         local fhmax_day=$(( ${FHMAX_GFS} / 24 ))
-        local fire_in="${AERO_INPUTES_DIR}/nexus/QFED/${vdate:0:4}/${vdate:4:2}/qfed2.emis_*.${PDY}.nc4"
+        local fire_in="${AERO_INPUTS_DIR}/nexus/QFED/${vdate:0:4}/${vdate:4:2}/qfed2.emis_*.${PDY}.nc4"
         fire_out="${COM_TOP}/mem000/model_data/chem/input/QFED_Blended_${PDY}_${fhmax_day}.nc"
         if [[ ! -f ${fire_out} ]]; then
             mkdir -p $(dirname ${fire_out})

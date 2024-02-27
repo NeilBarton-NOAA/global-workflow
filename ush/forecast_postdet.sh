@@ -976,7 +976,7 @@ GOCART_postdet() {
         local EMISSION_DIR=${AERO_INPUTS_DIR}/nexus/GBBEPx/v4/climMean
         local fhmax_day=$(( ${FHMAX_GFS} / 24 ))
         local fire_in="${AERO_INPUTS_DIR}/nexus/QFED/${vdate:0:4}/${vdate:4:2}/qfed2.emis_*.${PDY}.nc4"
-        fire_out="${COM_TOP}/mem000/model_data/chem/input/QFED_Blended_${PDY}_${fhmax_day}.nc"
+        fire_out="${COM_TOP}/${MEMDIR}/model_data/chem/input/QFED_Blended_${PDY}_${fhmax_day}.nc"
         if [[ ! -f ${fire_out} ]]; then
             mkdir -p $(dirname ${fire_out})
             ${HOMEgfs}/ush/gefs_fireclimo_blend.py -s ${PDY} -n ${fhmax_day} -c ${EMISSION_DIR} -f ${fire_in} -o ${fire_out} -r 0.95    

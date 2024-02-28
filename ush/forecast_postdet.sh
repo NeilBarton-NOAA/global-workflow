@@ -954,7 +954,11 @@ GOCART_rc() {
   fi
 
   if [[ ${BLENDED_WILDFIRE_EMISSIONS} == T ]]; then
-    fire_org='ExtData/nexus/QFED/%y4/%m2/qfed2.emis_so2.006.%y4%m2%d2.nc4'
+    fire_org='qfed_blended_so2.nc'
+    sed -i "s:${fire_org}:${fire_out}:g" ${DATA}/AERO_ExtData.rc
+    fire_org='qfed_blended_oc.nc'
+    sed -i "s:${fire_org}:${fire_out}:g" ${DATA}/AERO_ExtData.rc
+    fire_org='qfed_blended_bc.nc'
     sed -i "s:${fire_org}:${fire_out}:g" ${DATA}/AERO_ExtData.rc
   fi
 }

@@ -2,7 +2,7 @@
 
 # QFED
 #--------------------------------------------------------------------------------------------------------------------------------
-SU_BIOMASS NA  N Y %y4-%m2-%d2t12:00:00 none 0.7778 SO2 qfed_bledned_so2.nc
-OC_BIOMASS NA  N Y %y4-%m2-%d2t12:00:00 none 0.7778 OC  qfed_bledned_oc.nc
-BC_BIOMASS NA  N Y %y4-%m2-%d2t12:00:00 none 0.7778 BC qfed_bledned_bc.nc
+SU_BIOMASS NA  N Y %y4-%m2-%d2t12:00:00 none 0.7778 SO2 qfed_blended_so2.nc
+OC_BIOMASS NA  N Y %y4-%m2-%d2t12:00:00 none 0.7778 OC  qfed_blended_oc.nc
+BC_BIOMASS NA  N Y %y4-%m2-%d2t12:00:00 none 0.7778 BC qfed_blended_bc.nc
 # EMI_NH3_BB NA  N Y %y4-%m2-%d2t12:00:00 none 0.7778 NH3 qfed_bledned_nh3.nc

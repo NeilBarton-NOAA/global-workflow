@@ -435,7 +435,8 @@ EOF
   fi
 
   # Stochastic Physics Options
-  if [[ ${SET_STP_SEED:-"YES"} = "YES" ]]; then
+  echo "NPB:" ${DO_SPPT}
+  if [[ ${DO_SPPT:-"NO"} = "YES" ]]; then
     ISEED_SPPT=$((CDATE*10000 + ${MEMBER#0}*100 + 3)),$((CDATE*10000 + ${MEMBER#0}*100 + 4)),$((CDATE*10000 + ${MEMBER#0}*100 + 5)),$((CDATE*10000 + ${MEMBER#0}*100 + 6)),$((CDATE*10000 + ${MEMBER#0}*100 + 7))
     ISEED_CA=$(( (CDATE*10000 + ${MEMBER#0}*100 + 18) % 2147483647 )) 
     ISEED_SKEB=$((current_cycle*1000 + MEMBER*10 +1))
@@ -739,12 +740,8 @@ MOM6_postdet() {
   # If using stochatic parameterizations, create a seed that does not exceed the
   # largest signed integer
   if [[ "${DO_OCN_SPPT}" = "YES" ]] || [[ "${DO_OCN_PERT_EPBL}" = "YES" ]]; then
-    if [[ ${SET_STP_SEED:-"YES"} = "YES" ]]; then
-      ISEED_OCNSPPT=$((CDATE*10000 + ${MEMBER#0}*100 + 8)),$((CDATE*10000 + ${MEMBER#0}*100 + 9)),$((CDATE*10000 + ${MEMBER#0}*100 + 10)),$((CDATE*10000 + ${MEMBER#0}*100 + 11)),$((CDATE*10000 + ${MEMBER#0}*100 + 12))
-      ISEED_EPBL=$((CDATE*10000 + ${MEMBER#0}*100 + 13)),$((CDATE*10000 + ${MEMBER#0}*100 + 14)),$((CDATE*10000 + ${MEMBER#0}*100 + 15)),$((CDATE*10000 + ${MEMBER#0}*100 + 16)),$((CDATE*10000 + ${MEMBER#0}*100 + 17))
-    else
-      ISEED=${ISEED:-0}
-    fi
+    ISEED_OCNSPPT=$((CDATE*10000 + ${MEMBER#0}*100 + 8)),$((CDATE*10000 + ${MEMBER#0}*100 + 9)),$((CDATE*10000 + ${MEMBER#0}*100 + 10)),$((CDATE*10000 + ${MEMBER#0}*100 + 11)),$((CDATE*10000 + ${MEMBER#0}*100 + 12))
+    ISEED_EPBL=$((CDATE*10000 + ${MEMBER#0}*100 + 13)),$((CDATE*10000 + ${MEMBER#0}*100 + 14)),$((CDATE*10000 + ${MEMBER#0}*100 + 15)),$((CDATE*10000 + ${MEMBER#0}*100 + 16)),$((CDATE*10000 + ${MEMBER#0}*100 + 17))
   fi
 
   # Link output files

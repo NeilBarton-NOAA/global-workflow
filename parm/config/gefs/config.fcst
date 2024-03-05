@@ -27,7 +27,7 @@ export FHMAX=${FHMAX_GFS}
 export FHOUT=${FHOUT_GFS}
 export FHMAX_HF=${FHMAX_HF_GFS}
 export FHOUT_HF=${FHOUT_HF_GFS}
-export FHOUT_OCNICE=${FHOUT_OCNICE_GFS}
+export FHOUT_OCNICE=${FHOUT_OCNICE_GFS:-$FHOUT_GFS}
 
 # Turn on the use of wildfire emissions bleneded to climatology
 export BLENDED_WILDFIRE_EMISSIONS=T

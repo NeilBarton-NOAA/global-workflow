@@ -6,4 +6,7 @@ base:
   DO_MERGENSST: "NO"
   FHMAX_GFS: 840
   BASE_CPLIC: "/lfs/h2/ens/noscrub/neil.barton/ICs"
+  KEEPDATA: "YES"
+stage_ic:
+  STAGE_OCN_PERTURB_FILES: "true"
 

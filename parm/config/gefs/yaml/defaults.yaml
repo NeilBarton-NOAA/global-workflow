@@ -8,5 +8,5 @@ base:
   BASE_CPLIC: "/lfs/h2/ens/noscrub/neil.barton/ICs"
   KEEPDATA: "YES"
 stage_ic:
-  STAGE_OCN_PERTURB_FILES: "true"
+  USE_OCN_PERTURB_FILES: "true"
 

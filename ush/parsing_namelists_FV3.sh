@@ -19,6 +19,11 @@ DIAG_TABLE_APPEND=${DIAG_TABLE_APPEND:-${PARMgfs}/ufs/fv3/diag_table_aod}
 DATA_TABLE=${DATA_TABLE:-${PARMgfs}/ufs/MOM6_data_table.IN}
 FIELD_TABLE=${FIELD_TABLE:-${PARMgfs}/ufs/fv3/field_table}
 
+# set cdmbgwd
+if (( gwd_opt == 2 )) && [[ ${do_gsl_drag_ls_bl} == ".true." ]]; then
+  cdmbgwd=${cdmbgwd_gsl}
+fi
+
 # ensure non-prognostic tracers are set
 dnats=${dnats:-0}
 
@@ -393,9 +398,9 @@ cat >> input.nml <<EOF
   cplwav2atm   = ${cplwav2atm:-".false."}
 EOF
 
-if [ ${DO_SPPT} = "YES" ];then
+if [[ ${DO_SPPT} = "YES" ]]; then
 cat >> input.nml <<EOF
-  pert_mp = .false.  
+  pert_mp = .false.
   pert_radtend = .false.
   pert_clds = .true.
 EOF
@@ -638,6 +643,24 @@ EOF
   sppt_sfclimit = ${SPPT_SFCLIMIT:-".true."}
   use_zmtnblck = ${use_zmtnblck:-".true."}
   pbl_taper = ${pbl_taper:-"0,0,0,0.125,0.25,0.5,0.75"}
+EOF
+  fi
+  
+  if [[ "${DO_OCN_SPPT:-NO}" == "YES" ]]; then
+    cat >> input.nml <<EOF
+  OCNSPPT=${OCNSPPT}
+  OCNSPPT_LSCALE=${OCNSPPT_LSCALE}
+  OCNSPPT_TAU=${OCNSPPT_TAU}
+  ISEED_OCNSPPT=${ISEED_OCNSPPT:-${ISEED}}
+EOF
+  fi
+
+  if [[ "${DO_OCN_PERT_EPBL:-NO}" == "YES" ]]; then
+    cat >> input.nml <<EOF
+  EPBL=${EPBL}
+  EPBL_LSCALE=${EPBL_LSCALE}
+  EPBL_TAU=${EPBL_TAU}
+  ISEED_EPBL=${ISEED_EPBL:-${ISEED}}
 EOF
 
   fi

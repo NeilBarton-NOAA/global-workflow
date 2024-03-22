@@ -27,10 +27,7 @@ export FHMAX=${FHMAX_GFS}
 export FHOUT=${FHOUT_GFS}
 export FHMAX_HF=${FHMAX_HF_GFS}
 export FHOUT_HF=${FHOUT_HF_GFS}
-export FHOUT_OCNICE=${FHOUT_OCNICE_GFS:-$FHOUT_GFS}
-
-# Turn on the use of wildfire emissions bleneded to climatology
-export BLENDED_WILDFIRE_EMISSIONS=T
+export FHOUT_OCNICE=${FHOUT_OCNICE_GFS}
 
 # Get task specific resources
 source "${EXPDIR}/config.resources" fcst
@@ -41,7 +38,7 @@ if [[ "${DONST}" == "YES" ]]; then
     source "${EXPDIR}/config.nsst"
 fi
 
-export esmf_profile=".true."
+export esmf_profile=".false."
 export esmf_logkind="ESMF_LOGKIND_MULTI_ON_ERROR" #Options: ESMF_LOGKIND_MULTI_ON_ERROR, ESMF_LOGKIND_MULTI, ESMF_LOGKIND_NONE
 
 
@@ -106,9 +103,6 @@ if (( gwd_opt == 2 )); then
     export do_ugwp_v1_orog_only=".false."
     launch_level=$(echo "${LEVS}/2.35" |bc)
     export launch_level
-    if [[ ${do_gsl_drag_ls_bl} == ".true." ]]; then
-       export cdmbgwd=${cdmbgwd_gsl}
-    fi
 fi
 
 # Sponge layer settings
@@ -139,9 +133,9 @@ if [[ "${progsigma}" == ".true." ]]; then tbp="_progsigma" ; fi
 
 # Radiation options
 if [[ "${DO_AERO}" == "YES" ]]; then
-    export IAER=2011    ; #spectral band mapping method for aerosol optical properties
+    export IAER=2011  # spectral band mapping method for aerosol optical properties
 else
-    export IAER=1011    ; #spectral band mapping method for aerosol optical properties
+    export IAER=1011    
 fi
 export iovr_lw=3    ; #de-correlation length cloud overlap method (Barker, 2008)
 export iovr_sw=3    ; #de-correlation length cloud overlap method (Barker, 2008)

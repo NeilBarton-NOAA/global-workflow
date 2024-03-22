@@ -193,8 +193,8 @@ case ${step} in
         declare -x "wtime_${step}_gfs"="03:00:00"
         ;;
       "C384" | "C768" | "C1152")
-        declare -x "wtime_${step}"="06:00:00"
-        declare -x "wtime_${step}_gfs"="06:00:00"
+        declare -x "wtime_${step}"="14:00:00"
+        declare -x "wtime_${step}_gfs"="14:00:00"
         ;;
       *)
         echo "FATAL ERROR: Resources not defined for job ${job} at resolution ${CASE}"

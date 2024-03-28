@@ -5,6 +5,8 @@
 
 echo "BEGIN: config.fcst"
 
+export USE_ESMF_THREADING="YES"  # Toggle to use ESMF-managed threading or traditional threading in UFSWM
+
 # Turn off waves if not used for this CDUMP
 case ${WAVE_CDUMP} in
   both | "${CDUMP/enkf}" ) ;; # Don't change
@@ -143,7 +145,6 @@ export progsigma=".true."
 tbp=""
 if [[ "${progsigma}" == ".true." ]]; then tbp="_progsigma" ; fi
 
-# Radiation options
 # Radiation options
 if [[ "${DO_AERO}" == "YES" ]]; then
     export IAER=2011  # spectral band mapping method for aerosol optical properties

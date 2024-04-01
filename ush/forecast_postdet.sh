@@ -457,16 +457,6 @@ EOF
     do_shum=".true."
     ISEED_SHUM=$((current_cycle*1000 + MEMBER*10 + 2))
   fi
-  if [[ ${DO_OCN_SPPT} = "YES" ]]; then
-    OCNSPPT=${OCNSPPT:-0.8,0.4,0.2,0.08,0.04}
-    OCNSPPT_TAU=${OCNSPPT_TAU:-2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7}
-    OCNSPPT_LSCALE=${OCNSPPT_LSCALE:-500.E3,1000.E3,2000.E3,2000.E3,2000.E3}
-  fi
-  if [[ ${DO_OCN_PERT_EPBL} = "YES" ]]; then
-    EPBL=${EPBL:-0.8,0.4,0.2,0.08,0.04}
-    EPBL_TAU=${EPBL_TAU:-2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7}
-    EPBL_LSCALE=${EPBL_LSCALE:-500.E3,1000.E3,2000.E3,2000.E3,2000.E3}
-  fi
   if [[ ${DO_LAND_PERT} = "YES" ]]; then
     lndp_type=${lndp_type:-2}
     ISEED_LNDP=$(( (current_cycle*1000 + MEMBER*10 + 5) % 2147483647 ))

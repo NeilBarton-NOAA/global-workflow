@@ -66,6 +66,8 @@ def input_args():
         '-y', '--yaml', help='full path to yaml file describing the experiment configuration', type=Path, required=True)
     parser.add_argument(
         '-o', '--overwrite', help='overwrite previously created experiment', action="store_true", required=False)
+    parser.add_argument('--maxtries', help='maximum number of retries', type=int,
+                        default=2, required=False)
 
     return parser.parse_args()
 
@@ -93,7 +95,7 @@ if __name__ == '__main__':
 
     if user_inputs.overwrite:
         setup_expt_args.append("--overwrite")
-
+    
     logger.info(f"Call: setup_expt.main()")
     logger.debug(f"setup_expt.py {' '.join(setup_expt_args)}")
     setup_expt.main(setup_expt_args)
@@ -102,7 +104,9 @@ if __name__ == '__main__':
     experiment_dir = Path.absolute(Path.joinpath(
         Path(testconf.arguments.expdir), Path(testconf.arguments.pslot)))
 
-    setup_xml_args = [str(experiment_dir)]
+    setup_xml_args = ["--maxtries"]
+    setup_xml_args.append(str(user_inputs.maxtries))
+    setup_xml_args.append(str(experiment_dir))
 
     logger.info(f"Call: setup_xml.main()")
     logger.debug(f"setup_xml.py {' '.join(setup_xml_args)}")

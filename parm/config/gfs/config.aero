@@ -4,7 +4,7 @@
 
 # Turn off warnings about unused variables
 # shellcheck disable=SC2034
-
+export BLENDED_WILDFIRE_EMISSIONS=T
 
 # Path to the input data tree
 case ${machine} in
@@ -33,6 +33,7 @@ export AERO_INPUTS_DIR
 export AERO_DIAG_TABLE="${PARMgfs}/ufs/fv3/diag_table.aero"
 export AERO_FIELD_TABLE="${PARMgfs}/ufs/fv3/field_table.aero"
 # Biomass burning emission dataset. Choose from: gbbepx, qfed, none
+export BLENDED
 export AERO_EMIS_FIRE="qfed"
 # Directory containing GOCART configuration files
 export AERO_CONFIG_DIR="${PARMgfs}/ufs/gocart"

@@ -131,9 +131,9 @@ case "${fv3_res}" in
         export layout_x_gfs=16
         export layout_y_gfs=16
         export nthreads_fv3=1
-        export nthreads_fv3_gfs=2
+        export nthreads_fv3_gfs=1
         export nthreads_ufs=1
-        export nthreads_ufs_gfs=2
+        export nthreads_ufs_gfs=1
         export cdmbgwd="1.1,0.72,1.0,1.0"  # mountain blocking, ogwd, cgwd, cgwd src scaling
         export cdmbgwd_gsl="5.0,5.0,1.0,1.0"   # settings for GSL drag suite
         export knob_ugwp_tauamp=0.8e-3      # setting for UGWPv1 non-stationary GWD

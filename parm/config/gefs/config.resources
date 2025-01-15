@@ -203,6 +203,7 @@ case ${step} in
     ;;
 
   "atmos_products")
+    # Walltime is per forecast hour; will be multipled by group size
     export walltime="00:15:00"
     export ntasks=24
     export threads_per_task=1
@@ -211,7 +212,8 @@ case ${step} in
     ;;
 
   "atmos_ensstat")
-    export walltime="00:30:00"
+    # Walltime is per forecast hour; will be multipled by group size
+    export walltime="00:15:00"
     export ntasks=6
     export threads_per_task=1
     export tasks_per_node="${ntasks}"
@@ -219,6 +221,7 @@ case ${step} in
     ;;
 
   "oceanice_products")
+    # Walltime is per forecast hour; will be multipled by group size
     export walltime="00:15:00"
     export ntasks=1
     export tasks_per_node=1
@@ -227,7 +230,8 @@ case ${step} in
     ;;
 
   "wavepostsbs")
-    export walltime="03:00:00"
+    # Walltime is per forecast hour; will be multipled by group size
+    export walltime="00:15:00"
     export ntasks=1
     export threads_per_task=1
     export tasks_per_node=$(( max_tasks_per_node / threads_per_task ))
@@ -297,7 +301,7 @@ case ${step} in
     ;;
 
   "cleanup")
-    export walltime="00:15:00"
+    export walltime="00:30:00"
     export ntasks=1
     export tasks_per_node=1
     export threads_per_task=1

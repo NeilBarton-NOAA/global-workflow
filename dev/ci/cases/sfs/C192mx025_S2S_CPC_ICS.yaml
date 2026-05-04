@@ -1,8 +1,8 @@
 experiment:
   net: sfs
   mode: forecast-only
-  idate: 1994050100
-  edate: 1994050100
+  idate: {{ 'DTG_GW' | getenv }}
+  edate: {{ 'DTG_GW' | getenv }}
   pslot: {{ 'pslot' | getenv }}
   app: S2S
   resdetatmos: 192

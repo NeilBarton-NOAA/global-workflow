@@ -126,6 +126,7 @@ CICE_namelists() {
     local CICE_AHMAX=${CICE_AHMAX:-0.3}
     local CICE_R_ICE=${CICE_R_ICE:-0.}
     local CICE_R_PND=${CICE_R_PND:-0.}
+    local CICE_R_SNW=${CICE_R_PND:-1.5}
     local CICE_PNDASPECT=${CICE_PNDASPECT:-0.8}
     local CICE_KSTRENGTH=${CICE_KSTRENGTH:-1}
     local CICE_E_YIELDCURVE=${CICE_E_YIELDCURVE:-2}
@@ -134,8 +135,10 @@ CICE_namelists() {
     local CICE_SNWREDIST=${CICE_SNWREDIST:-'bulk'}
     if [[ ${CICE_SNWREDIST} == 'ITDrdg' ]]; then
         local CICE_TR_SNOW='.true.'
+        local CICE_SNWGRAIN='.true.'
     else
         local CICE_TR_SNOW='.false.'
+        local CICE_SNWGRAIN='.false.'
     fi
     local CICE_RSNW_FALL=${CICE_RSNW_FALL:-100.}
     local CICE_RSNW_MLT=${CICE_RSNW_MLT:-1500.}

@@ -11,9 +11,9 @@ if ((status != 0)); then exit "${status}"; fi
 source "${HOMEgfs}/ush/detect_machine.sh" || exit 1
 
 if [[ "${MACHINE_ID}" == "ursa" ]]; then
-    module use /scratch4/NCEPDEV/nems/Richard.Grubin/spack-stack/envs/ue-oneapi-2025.2.1-wgrib2-3.8.0/modules/Core
-    module load stack-intel-oneapi-compilers/2025.2.1
-    module load stack-intel-oneapi-mpi/2021.13
+    module use /contrib/spack-stack/spack-stack-2.1.0/envs/ue-oneapi-2025.3.1/modules/Core
+    module load stack-intel-oneapi-compilers/2025.3.1
+    module load stack-intel-oneapi-mpi/2021.17
     module load wgrib2/3.8.0
     export GMERGE=gmerge
     export WGRIB2=wgrib2

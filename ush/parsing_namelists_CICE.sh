@@ -100,6 +100,7 @@ CICE_namelists() {
     local CICE_GRIDOCN="A" # A-grid for ocean (MOM6)
     local CICE_GRIDICE="B" # B-grid for seaice (CICE6)
     # tracer_nml section
+    local CICE_TR_POND_TOPO=${CICE_TR_POND_TOPO:-".false"}
     local CICE_TR_POND_LVL=${CICE_TR_POND_LVL:-".true."} # Use level melt ponds
     # (if CICE_TR_POND_LVL=true):
     #   -- if true, initialize the level ponds from restart (if runtype=continue)
@@ -107,31 +108,32 @@ CICE_namelists() {
     local CICE_RESTART_POND_LVL=".false." # Restart level ponds from restart file (if runtype=continue)
     # thermo_nml section
     local CICE_KTHERM=2 # 0=zero-layer thermodynamics, 1=fixed-salinity profile, 2=mushy thermodynamics
+    local CICE_CONDUCT=${CICE_CONDUCT:-'bubbly'}
+    local CICE_FLOEDIAM=${CICE_FLOEDIAM:-300.}
+    local CICE_RAC_RAPID_MODE=${CICE_RAC_RAPID_MODE:-10}
+    local CICE_DSDT_SLOW_MODE=${CICE_DSDT_SLOW_MODE:--5.0e-8}
+    local CICE_PHI_C_SLOW_MODE=${CICE_PHI_C_SLOW_MODE:-0.05}
     # dynamics_nml section
-    # NONE
+    local CICE_ADVECTION=${CICE_ADVECTION:-'remap'}
+    local CICE_KSTRENGTH=${CICE_KSTRENGTH:-1}
+    local CICE_MU_RDG=${CICE_MU_RDG:-3.}
+    local CICE_E_YIELDCURVE=${CICE_E_YIELDCURVE:-2}
+    local CICE_E_PLASTICPOT=${CICE_E_YIELDCURVE}
     # shortwave_nml section
-    # NONE
-    # ponds_nml section
-    # NONE
-    # snow_nml section
-    # NONE
-    # forcing_nml section
-    local CICE_FRAZIL_FWSALT=${FRAZIL_FWSALT:-".true."}
-    local CICE_TFREEZE_OPTION=${CICE_TFREEZE_OPTION:-"mushy"}
-    local CICE_FBOT_XFER_TYPE=${CICE_FBOT_XFER_TYPE:-"constant"}
-    local CICE_ALBICEV=${CICE_ALBICEV:-0.78}
-    local CICE_ALBICEI=${CICE_ALBICEI:-0.36}
-    local CICE_ALSNOWV=${CICE_ALSNOWV:-0.98}
-    local CICE_ALBSNOWI=${CICE_ALBSNOWI:-0.70}
     local CICE_AHMAX=${CICE_AHMAX:-0.3}
     local CICE_R_ICE=${CICE_R_ICE:-0.}
     local CICE_R_PND=${CICE_R_PND:-0.}
-    local CICE_R_SNW=${CICE_R_PND:-1.5}
+    local CICE_R_SNW=${CICE_R_SNW:-1.5}
+    local CICE_DT_MLT=${CICE_DT_MLT:-1.5}
+    local CICE_RSNW_MLT=${CICE_RSNW_MLT:-1500.}
+    # ponds_nml section
+    local CICE_HS0=${CICE_HS1:-0.}
+    local CICE_HS1=${CICE_HS1:-0.03}
+    local CICE_DPSCALE=${CICE_DPSCALE:-1.e-3}
+    local CICE_RFRACMIN=${CICE_RFRACMIN:-.15}
+    local CICE_RFRACMAX=${CICE_RFRACMAX:-1.}
     local CICE_PNDASPECT=${CICE_PNDASPECT:-0.8}
-    local CICE_KSTRENGTH=${CICE_KSTRENGTH:-1}
-    local CICE_E_YIELDCURVE=${CICE_E_YIELDCURVE:-2}
-    local CICE_E_PLASTICPOT=${CICE_E_YIELDCURVE}
-    local CICE_CONDUCT=${CICE_CONDUCT:-'bubbly'}
+    # snow_nml section
     local CICE_SNWREDIST=${CICE_SNWREDIST:-'bulk'}
     if [[ ${CICE_SNWREDIST} == 'ITDrdg' ]]; then
         local CICE_TR_SNOW='.true.'
@@ -140,8 +142,12 @@ CICE_namelists() {
         local CICE_TR_SNOW='.false.'
         local CICE_SNWGRAIN='.false.'
     fi
-    local CICE_RSNW_FALL=${CICE_RSNW_FALL:-100.}
-    local CICE_RSNW_MLT=${CICE_RSNW_MLT:-1500.}
+    # forcing_nml section
+    local CICE_EMISSIVITY=${CICE_EMISSIVITY:-0.95}
+    local CICE_FBOT_XFER_TYPE=${CICE_FBOT_XFER_TYPE:-"constant"} 
+    local CICE_FRAZIL_FWSALT=${FRAZIL_FWSALT:-".true."}
+    local CICE_TFREEZE_OPTION=${CICE_TFREEZE_OPTION:-"mushy"}
+    local CICE_CALC_DRAGIO=${CICE_CALC_DRAGIO:-.false.}
     # domain_nml section
     local CICE_NPROC=${ntasks_cice6}
     # NX_GLB

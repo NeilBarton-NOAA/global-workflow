@@ -127,7 +127,8 @@ CICE_namelists() {
     local CICE_DT_MLT=${CICE_DT_MLT:-1.5}
     local CICE_RSNW_MLT=${CICE_RSNW_MLT:-1500.}
     # ponds_nml section
-    local CICE_HS0=${CICE_HS1:-0.}
+    local CICE_HP1=${CICE_HP1:-0.01}
+    local CICE_HS0=${CICE_HS0:-0.}
     local CICE_HS1=${CICE_HS1:-0.03}
     local CICE_DPSCALE=${CICE_DPSCALE:-1.e-3}
     local CICE_RFRACMIN=${CICE_RFRACMIN:-.15}

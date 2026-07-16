@@ -65,10 +65,10 @@ for (( d=1; d<=$month_days; d++ )); do
         rm -f "${raw_tmp_acc}"
     fi
 
-    # --- PART B: INSTANTANEOUS VARIABLES (Hours: E-24, E-18, E-12, E-6, E) ---
+    # --- PART B: INSTANTANEOUS VARIABLES (Hours: E-24, E-18, E-12, E-6) ---
     all_inst_exist=true
     list_inst=""
-    for hr in $((end_of_day_fhr - 24)) $((end_of_day_fhr - 18)) $((end_of_day_fhr - 12)) $((end_of_day_fhr - 6)) $((end_of_day_fhr)); do
+    for hr in $((end_of_day_fhr - 24)) $((end_of_day_fhr - 18)) $((end_of_day_fhr - 12)) $((end_of_day_fhr - 6)); do
         fpath="${COMIN_ATMOS_MASTER}/sfs.t${cyc}z.master.f$(printf "%03d" $hr).grib2"
         if [[ ! -f "$fpath" ]]; then all_inst_exist=false; break; fi
         list_inst+="$fpath "
@@ -97,8 +97,7 @@ dest_inst="${OUTDIR}/inst.daily.${MEMDIR}/inst.daily.${filename_start}${filemm}$
 if [ -d "${tmp_acc_work_dir}" ]; then
     # Clear array and fill it using mapfile
     unset acc_files
-    acc_string=$(ls -v "${tmp_acc_work_dir}"/daily_acc*.grb 2>/dev/null)
-    mapfile -t acc_files <<< "${acc_string}"
+    mapfile -t acc_files < <(ls -v "${tmp_acc_work_dir}"/daily_acc*.grb 2>/dev/null)
     
     if [ ${#acc_files[@]} -gt 0 ]; then
         echo "INFO: Task $i merging ${#acc_files[@]} days for ACC using array expansion."
@@ -111,10 +110,8 @@ fi
 
 # 2. Consolidate Instantaneous (INST)
 if [ -d "${tmp_inst_work_dir}" ]; then
-    # Clear array and fill it using mapfile
     unset inst_files
-    inst_string=$(ls -v "${tmp_inst_work_dir}"/daily_inst*.grb 2>/dev/null)
-    mapfile -t inst_files <<< "${inst_string}"
+    mapfile -t inst_files < <(ls -v "${tmp_inst_work_dir}"/daily_inst*.grb 2>/dev/null)
     
     if [ ${#inst_files[@]} -gt 0 ]; then
         echo "INFO: Task $i merging ${#inst_files[@]} days for INST using array expansion."

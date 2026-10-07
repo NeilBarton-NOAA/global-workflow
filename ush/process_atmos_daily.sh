@@ -101,9 +101,9 @@ mkdir -p "${OUTDIR}/acc.monthly.${MEMDIR}" "${OUTDIR}/inst.monthly.${MEMDIR}"
 mkdir -p "${OUTDIR_FINAL}/acc.daily.${MEMDIR}" "${OUTDIR}/inst.daily.${MEMDIR}"
 mkdir -p "${OUTDIR_FINAL}/acc.monthly.${MEMDIR}" "${OUTDIR}/inst.monthly.${MEMDIR}"
 dest_acc="${OUTDIR}/acc.daily.${MEMDIR}/acc.daily.${filename_start}${filemm}${filename_end}"
-dest_acc_tmp="${OUTDIR}/acc.daily.${MEMDIR}/tmp.acc.daily.${filename_start}${filemm}${filename_end}"  #lcdc/mcdc/hcdc removed
+dest_acc_tmp="${OUTDIR}/acc.daily.${MEMDIR}/tmp.acc.daily.${filename_start}${filemm}${filename_end}"  #lcdc/mcdc/hcdc/snowc/albdo removed
 dest_inst="${OUTDIR}/inst.daily.${MEMDIR}/inst.daily.${filename_start}${filemm}${filename_end}"
-dest_inst_tmp="${OUTDIR}/inst.daily.${MEMDIR}/tmp.inst.daily.${filename_start}${filemm}${filename_end}"
+dest_inst_tmp="${OUTDIR}/inst.daily.${MEMDIR}/tmp.inst.daily.${filename_start}${filemm}${filename_end}" # snod removed
 dest_final_acc="${OUTDIR_FINAL}/acc.daily.${MEMDIR}/acc.daily.${filename_start}${filemm}${filename_end}"
 dest_final_inst="${OUTDIR_FINAL}/inst.daily.${MEMDIR}/inst.daily.${filename_start}${filemm}${filename_end}"
 

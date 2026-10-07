@@ -448,7 +448,12 @@ FV3_predet() {
         FNSLPC=${FNSLPC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.slope_type.tileX.nc"}
         FNALBC=${FNALBC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.snowfree_albedo.tileX.nc"}
         FNVETC=${FNVETC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.vegetation_type.tileX.nc"}
-        FNSOTC=${FNSOTC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.soil_type.tileX.nc"}
+        if [[ "${MACHINE_ID}" == "ursa" ]]; then
+            FNSOTC="/scratch4/NCEPDEV/land/data/fix/soilgrids/20240917/${CASE}/sfc/${CASE}.mx${OCNRES}.soil_type.tileX.nc"
+        else
+            echo "FATAL error, running with LSM updates and FNSOTC is not on ${MACHINE_ID}"
+            exit 2
+        fi
         FNSOCC=${FNSOCC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.soil_color.tileX.nc"}
         FNABSC=${FNABSC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.maximum_snow_albedo.tileX.nc"}
     fi

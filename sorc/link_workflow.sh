@@ -156,7 +156,6 @@ for dir in aer \
     gsi \
     lut \
     mom6 \
-    orog \
     sfc_climo \
     ugwd \
     verif \
@@ -164,6 +163,19 @@ for dir in aer \
     fix_ver="${dir}_ver"
     safe_link_or_copy "${FIX_DIR}/${dir}/${!fix_ver}" "${dir}"
 done
+
+# to use soilgrids soil type on ursa/gaeac6/wcoss2 set hard path
+fix_ver="orog_ver"
+if [[ "${machine}" == "wcoss2" ]]; then
+    safe_link_or_copy "/lfs/h2/emc/physics/noscrub/land/fix/orog_soilgrids/${!fix_ver}" orog
+elif [[ "${machine}" == "ursa" ]]; then
+    safe_link_or_copy "/scratch4/NCEPDEV/land/data/fix/orog_soilgrids/${!fix_ver}" orog
+elif [[ "${machine}" == "gaeac6" ]]; then
+    safe_link_or_copy "/gpfs/f6/land-cpu/world-shared/fix/orog_soilgrids/${!fix_ver}" orog
+else
+    safe_link_or_copy "${FIX_DIR}/orog/${!fix_ver}" orog
+fi
+
 # global-nest uses different versions of orog and ugwd
 if [[ "${LINK_NEST:-OFF}" == "ON" ]]; then
     for dir in orog \

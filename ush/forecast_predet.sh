@@ -425,38 +425,19 @@ FV3_predet() {
     FNSNOC=${FNSNOC:-"${FIXglobal}/am/global_snoclim.1.875.grb"}
     FNZORC=${FNZORC:-"igbp"}
     FNAISC=${FNAISC:-"${FIXglobal}/am/IMS-NIC.blended.ice.monthly.clim.grb"}
-    FNSMCC=${FNSMCC:-"${FIXglobal}/am/global_soilmgldas.statsgo.t${JCAP}.${LONB}.${LATB}.grb"}
+    FNALBC2=${FNALBC2:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.facsf.tileX.nc"}
+    FNTG3C=${FNTG3C:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.substrate_temperature.tileX.nc"}
+    FNVEGC=${FNVEGC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.vegetation_greenness.tileX.nc"}
     FNMSKH=${FNMSKH:-"${FIXglobal}/am/global_slmask.t1534.3072.1536.grb"}
-    if [[ "${RUN}" == "sfs" ]]; then
-        FNALBC2=${FNALBC2:-"${FIXorog}/${CASE}_gwd_hr3/sfc/${CASE}.mx${OCNRES}.facsf.tileX.nc"}
-        FNTG3C=${FNTG3C:-"${FIXorog}/${CASE}_gwd_hr3/sfc/${CASE}.mx${OCNRES}.substrate_temperature.tileX.nc"}
-        FNVEGC=${FNVEGC:-"${FIXorog}/${CASE}_gwd_hr3/sfc/${CASE}.mx${OCNRES}.vegetation_greenness.tileX.nc"}
-        FNVMNC=${FNVMNC:-"${FIXorog}/${CASE}_gwd_hr3/sfc/${CASE}.mx${OCNRES}.vegetation_greenness.tileX.nc"}
-        FNVMXC=${FNVMXC:-"${FIXorog}/${CASE}_gwd_hr3/sfc/${CASE}.mx${OCNRES}.vegetation_greenness.tileX.nc"}
-        FNSLPC=${FNSLPC:-"${FIXorog}/${CASE}_gwd_hr3/sfc/${CASE}.mx${OCNRES}.slope_type.tileX.nc"}
-        FNALBC=${FNALBC:-"${FIXorog}/${CASE}_gwd_hr3/sfc/${CASE}.mx${OCNRES}.snowfree_albedo.tileX.nc"}
-        FNVETC=${FNVETC:-"${FIXorog}/${CASE}_gwd_hr3/sfc/${CASE}.mx${OCNRES}.vegetation_type.tileX.nc"}
-        FNSOTC=${FNSOTC:-"${FIXorog}/${CASE}_gwd_hr3/sfc/${CASE}.mx${OCNRES}.soil_type.tileX.nc"}
-        FNSOCC=${FNSOCC:-"${FIXorog}/${CASE}_gwd_hr3/sfc/${CASE}.mx${OCNRES}.soil_color.tileX.nc"}
-        FNABSC=${FNABSC:-"${FIXorog}/${CASE}_gwd_hr3/sfc/${CASE}.mx${OCNRES}.maximum_snow_albedo.tileX.nc"}
-    else
-        FNALBC2=${FNALBC2:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.facsf.tileX.nc"}
-        FNTG3C=${FNTG3C:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.substrate_temperature.tileX.nc"}
-        FNVEGC=${FNVEGC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.vegetation_greenness.tileX.nc"}
-        FNVMNC=${FNVMNC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.vegetation_greenness.tileX.nc"}
-        FNVMXC=${FNVMXC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.vegetation_greenness.tileX.nc"}
-        FNSLPC=${FNSLPC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.slope_type.tileX.nc"}
-        FNALBC=${FNALBC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.snowfree_albedo.tileX.nc"}
-        FNVETC=${FNVETC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.vegetation_type.tileX.nc"}
-        if [[ "${MACHINE_ID}" == "ursa" ]]; then
-            FNSOTC="/scratch4/NCEPDEV/land/data/fix/soilgrids/20240917/${CASE}/sfc/${CASE}.mx${OCNRES}.soil_type.tileX.nc"
-        else
-            echo "FATAL error, running with LSM updates and FNSOTC is not on ${MACHINE_ID}"
-            exit 2
-        fi
-        FNSOCC=${FNSOCC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.soil_color.tileX.nc"}
-        FNABSC=${FNABSC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.maximum_snow_albedo.tileX.nc"}
-    fi
+    FNVMNC=${FNVMNC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.vegetation_greenness.tileX.nc"}
+    FNVMXC=${FNVMXC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.vegetation_greenness.tileX.nc"}
+    FNSLPC=${FNSLPC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.slope_type.tileX.nc"}
+    FNALBC=${FNALBC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.snowfree_albedo.tileX.nc"}
+    FNVETC=${FNVETC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.vegetation_type.tileX.nc"}
+    FNSOTC=${FNSOTC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.soil_type.tileX.nc"}
+    FNSOCC=${FNSOCC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.soil_color.tileX.nc"}
+    FNABSC=${FNABSC:-"${FIXorog}/${CASE}/sfc/${CASE}.mx${OCNRES}.maximum_snow_albedo.tileX.nc"}
+    FNSMCC=${FNSMCC:-"${FIXglobal}/am/global_soilmgldas.statsgo.t${JCAP}.${LONB}.${LATB}.grb"}
 
     # If the appropriate resolution fix file is not present, use the highest resolution available (T1534)
     if [[ ! -f "${FNSMCC}" ]]; then
@@ -464,18 +445,10 @@ FV3_predet() {
     fi
 
     # Grid and orography data
-    if [[ "${RUN}" == "sfs" ]]; then
-        if [[ "${cplflx}" == ".false." ]]; then
-            cpreq "${FIXorog}/${CASE}_gwd_hr3/${CASE}_mosaic.nc" "${DATA}/INPUT/grid_spec.nc"
-        else
-            cpreq "${FIXorog}/${CASE}_gwd_hr3/${CASE}_mosaic.nc" "${DATA}/INPUT/${CASE}_mosaic.nc"
-        fi
+    if [[ "${cplflx}" == ".false." ]]; then
+        cpreq "${FIXorog}/${CASE}/${CASE}_mosaic.nc" "${DATA}/INPUT/grid_spec.nc"
     else
-        if [[ "${cplflx}" == ".false." ]]; then
-            cpreq "${FIXorog}/${CASE}/${CASE}_mosaic.nc" "${DATA}/INPUT/grid_spec.nc"
-        else
-            cpreq "${FIXorog}/${CASE}/${CASE}_mosaic.nc" "${DATA}/INPUT/${CASE}_mosaic.nc"
-        fi
+        cpreq "${FIXorog}/${CASE}/${CASE}_mosaic.nc" "${DATA}/INPUT/${CASE}_mosaic.nc"
     fi
 
     # Files for GWD
@@ -483,22 +456,12 @@ FV3_predet() {
 
     # Files for orography, GWD tiles
     local tt
-    if [[ "${RUN}" == "sfs" ]]; then
-        for ((tt = 1; tt <= ntiles; tt++)); do
-            cpreq "${FIXorog}/${CASE}_gwd_hr3/${CASE}.mx${OCNRES}_oro_data.tile${tt}.nc" "${DATA}/INPUT/oro_data.tile${tt}.nc"
-            cpreq "${FIXorog}/${CASE}_gwd_hr3/${CASE}_grid.tile${tt}.nc" "${DATA}/INPUT/${CASE}_grid.tile${tt}.nc"
-            cpreq "${FIXugwd}/${CASE}/${CASE}_oro_data_ls.tile${tt}.nc" "${DATA}/INPUT/oro_data_ls.tile${tt}.nc"
-            cpreq "${FIXugwd}/${CASE}/${CASE}_oro_data_ss.tile${tt}.nc" "${DATA}/INPUT/oro_data_ss.tile${tt}.nc"
-        done
-    else
-        for ((tt = 1; tt <= ntiles; tt++)); do
-            cpreq "${FIXorog}/${CASE}/${CASE}.mx${OCNRES}_oro_data.tile${tt}.nc" "${DATA}/INPUT/oro_data.tile${tt}.nc"
-            cpreq "${FIXorog}/${CASE}/${CASE}_grid.tile${tt}.nc" "${DATA}/INPUT/${CASE}_grid.tile${tt}.nc"
-            cpreq "${FIXugwd}/${CASE}/${CASE}_oro_data_ls.tile${tt}.nc" "${DATA}/INPUT/oro_data_ls.tile${tt}.nc"
-            cpreq "${FIXugwd}/${CASE}/${CASE}_oro_data_ss.tile${tt}.nc" "${DATA}/INPUT/oro_data_ss.tile${tt}.nc"
-        done
-    fi
-
+    for ((tt = 1; tt <= ntiles; tt++)); do
+        cpreq "${FIXorog}/${CASE}/${CASE}.mx${OCNRES}_oro_data.tile${tt}.nc" "${DATA}/INPUT/oro_data.tile${tt}.nc"
+        cpreq "${FIXorog}/${CASE}/${CASE}_grid.tile${tt}.nc" "${DATA}/INPUT/${CASE}_grid.tile${tt}.nc"
+        cpreq "${FIXugwd}/${CASE}/${CASE}_oro_data_ls.tile${tt}.nc" "${DATA}/INPUT/oro_data_ls.tile${tt}.nc"
+        cpreq "${FIXugwd}/${CASE}/${CASE}_oro_data_ss.tile${tt}.nc" "${DATA}/INPUT/oro_data_ss.tile${tt}.nc"
+    done
     if [[ "${DO_NEST:-NO}" == "YES" ]]; then
         ${NLN} "${DATA}/INPUT/oro_data.tile7.nc" "${DATA}/INPUT/oro_data.nest02.tile7.nc"
         ${NLN} "${DATA}/INPUT/${CASE}_grid.tile7.nc" "${DATA}/INPUT/${CASE}_grid.nest02.tile7.nc"
@@ -673,7 +636,7 @@ WW3_predet() {
     # Copy mod_def files for wave grids
     local ww3_grid
     #if shel, only 1 waveGRD which is linked to mod_def.ww3
-    cpreq "${COMIN_WAVE_INIT}/${RUN}.t${cyc}z.mod_def.${waveGRD}.bin" "${DATA}/mod_def.ww3"
+    cpreq "${COMIN_WAVE_PREP}/${RUN}.t${cyc}z.mod_def.${waveGRD}.bin" "${DATA}/mod_def.ww3"
 
     #If pnt_wght file exists, use it to speed up initialization for unstructured grids
     # this file does not exist for structured, and the model can run without it (just slower init)
@@ -685,7 +648,7 @@ WW3_predet() {
     # so these files are not generated.
     # TODO: Remove these lines or enable waveprep job
     if [[ "${WW3ICEINP}" == "YES" ]]; then
-        local wavicefile="${COMIN_WAVE_INIT}/${RUN}.${WAVEICE_FID}.t${current_cycle:8:2}z.ice"
+        local wavicefile="${COMIN_WAVE_PREP}/${RUN}.${WAVEICE_FID}.t${current_cycle:8:2}z.ice"
         if [[ ! -f "${wavicefile}" ]]; then
             echo "FATAL ERROR: WW3ICEINP='${WW3ICEINP}', but missing ice file '${wavicefile}', ABORT!"
             exit 1
@@ -694,7 +657,7 @@ WW3_predet() {
     fi
 
     if [[ "${WW3CURINP}" == "YES" ]]; then
-        local wavcurfile="${COMIN_WAVE_INIT}/${RUN}.${WAVECUR_FID}.t${current_cycle:8:2}z.cur"
+        local wavcurfile="${COMIN_WAVE_PREP}/${RUN}.${WAVECUR_FID}.t${current_cycle:8:2}z.cur"
         if [[ ! -f "${wavcurfile}" ]]; then
             echo "FATAL ERROR: WW3CURINP='${WW3CURINP}', but missing current file '${wavcurfile}', ABORT!"
             exit 1

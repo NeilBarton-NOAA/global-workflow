@@ -12,7 +12,7 @@ experiment:
   nens: {{ 'NENS_GW' | getenv if ('NENS_GW' | getenv) != 'UNDEFINED' else 10 }}
   comroot: {{ 'RUNTESTS' | getenv }}/COMROOT
   expdir: "{{ 'EXPDIR_TOP' | getenv if ('EXPDIR_TOP' | getenv) != 'UNDEFINED' else ('RUNTESTS' | getenv) }}/EXPDIR"
-  icsdir: {{ 'TOPICDIR' | getenv }}/CPC_landice/C192mx025
+  icsdir: {{ 'TOPICDIR' | getenv }}/CPC_landice_update/C192mx025
   yaml: {{ HOMEglobal }}/dev/ci/cases/yamls/sfs_full_C192mx025_CPC_ICS.yaml
 
 workflow:

@@ -99,7 +99,7 @@ export BASE_ENV="${HOMEglobal}/env"
 export SDATE="{{ SDATE }}"
 export EDATE="{{ EDATE }}"
 export EXP_WARM_START="{{ EXP_WARM_START }}"
-export assim_freq=6
+export assim_freq="{{ assim_freq }}"
 export PSLOT="{{ PSLOT }}"
 export EXPDIR="{{ EXPDIR }}/${PSLOT}"
 export ROTDIR="{{ COMROOT }}/${PSLOT}"
@@ -290,7 +290,9 @@ export MEMDIR="mem${ENSMEM}"
 export DO_CA="YES"
 
 export DOIAU="NO"  # While we are not doing IAU, we may want to warm start w/ IAU in the future
-export DOIAU_COLDSTART="{{ DOIAU_COLDSTART }}" #SFS from GFS ICs cold starts with IAU
+export DOIAU_COLDSTART_ATM="{{ DOIAU_COLDSTART_ATM }}" #SFS from GFS or replay ICs cold starts with IAU
+export DOIAU_COLDSTART_OCN="{{ DOIAU_COLDSTART_OCN }}" #SFS from GFS ICs cold starts with IAU, replay does not
+export DOIAU_COLDSTART_LND="{{ DOIAU_COLDSTART_LND }}" #SFS from GFS ICs cold starts with IAU, replay does not
 
 # Check if cycle is warm starting with IAU
 if [[ "${EXP_WARM_START}" = ".true." ]]; then

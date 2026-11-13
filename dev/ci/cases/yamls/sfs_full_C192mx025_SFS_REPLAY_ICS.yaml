@@ -1,0 +1,13 @@
+defaults:
+  !INC {{ HOMEglobal }}/dev/parm/config/sfs/yaml/defaults.yaml
+base:
+  FHMAX_GFS: 8784
+  FCST_BREAKPOINTS: "2400, 4800, 7200"
+  DOIAU_COLDSTART_ATM: "YES"
+  DOIAU_COLDSTART_OCN: "NO"
+  DOIAU_COLDSTART_LND: "NO"
+  assim_freq: 0
+nsst:
+  NST_SPINUP: 0
+
+

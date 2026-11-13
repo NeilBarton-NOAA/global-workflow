@@ -44,8 +44,8 @@ class Stage(Task):
             'OCNRES', 'waveGRD', 'ntiles', 'DOIAU', 'ATMINC_GRID', 'DOENKFONLY_ATM',
             'DO_JEDIOCNVAR', 'DO_STARTMEM_FROM_JEDIICE',
             'DO_WAVE', 'DO_OCN', 'DO_ICE', 'DO_NEST', 'DO_CA', 'DO_AERO_ANL', 'MOM6_INTERP_ICS',
-            'USE_ATM_ENS_PERTURB_FILES', 'USE_OCN_ENS_PERTURB_FILES', 'DOIAU_COLDSTART',
-            'DO_GSISOILDA', 'DO_LAND_IAU'
+            'USE_ATM_ENS_PERTURB_FILES', 'USE_OCN_ENS_PERTURB_FILES', 'DOIAU_COLDSTART_ATM',
+            'DOIAU_COLDSTART_OCN', 'DOIAU_COLDSTART_LND', 'DO_GSISOILDA', 'DO_LAND_IAU'
         ]
 
         if self.task_config.get('NET') == 'gfs':
@@ -80,7 +80,7 @@ class Stage(Task):
                 config_vars['START_ICE_FROM_ANA'] = True
             if self.task_config.get("DO_STARTMEM_FROM_JEDIICE", False) and self.task_config.RUN == "enkfgdas":
                 config_vars['START_ICE_FROM_ANA'] = True
-            if self.task_config.get("DOIAU_COLDSTART", False):
+            if self.task_config.get("DOIAU_COLDSTART_OCN", False):
                 config_vars['START_ICE_FROM_ANA'] = True
 
         return config_vars
@@ -114,7 +114,8 @@ class Stage(Task):
 
         # Previous cycle variables
         previous_cycle_HH = self.task_config.previous_cycle.strftime("%H")
-        cycle_vars['m_index'] = self.task_config.current_cycle.hour // self.task_config.assim_freq
+        if self.task_config.assim_freq > 0:
+            cycle_vars['m_index'] = self.task_config.current_cycle.hour // self.task_config.assim_freq
         cycle_vars['p_prefix'] = to_fv3time(self.task_config.previous_cycle)
         cycle_vars['previous_cycle_HH'] = previous_cycle_HH
         cycle_vars['previous_cycle_YMD'] = to_YMD(self.task_config.previous_cycle)

@@ -128,27 +128,25 @@ FV3_postdet() {
     fi
 
     #============================================================================
-    # Determine increment files when doing cold start
-    if [[ "${warm_start}" == ".false." ]] && [[ "${DOIAU_COLDSTART:-NO}" == "NO" ]]; then
-
-        if [[ "${USE_ATM_ENS_PERTURB_FILES:-NO}" == "YES" ]]; then
-            if ((MEMBER == 0)); then
-                inc_files=()
-            else
-                inc_files=("increment.atm.i006.nc")
-                read_increment=".true."
-                res_latlon_dynamics="increment.atm.i006.nc"
-            fi
-            increment_file_on_native_grid=".false."
-            local increment_file
-            for inc_file in "${inc_files[@]}"; do
-                increment_file="${COMIN_ATMOS_ANALYSIS}/${RUN}.t${cyc}z.${inc_file}"
-                cpreq "${increment_file}" "${DATA}/INPUT/${inc_file}"
-            done
+    # Determine perturbations files for ensemble
+    if [[ "${USE_ATM_ENS_PERTURB_FILES:-NO}" == "YES" ]]; then
+        if ((MEMBER == 0)); then
+            inc_files=()
+        else
+            inc_files=("increment.atm.i006.nc")
+            read_increment=".true."
+            res_latlon_dynamics="increment.atm.i006.nc"
         fi
+        increment_file_on_native_grid=".false."
+        local increment_file
+        for inc_file in "${inc_files[@]}"; do
+            increment_file="${COMIN_ATMOS_ANALYSIS}/${RUN}.t${cyc}z.${inc_file}"
+            cpreq "${increment_file}" "${DATA}/INPUT/${inc_file}"
+        done
+    fi
 
     # Determine IAU and increment files when doing warm start
-    elif [[ "${warm_start}" == ".true." ]] || [[ "${DOIAU_COLDSTART:-NO}" == "YES" ]]; then
+    if [[ "${warm_start}" == ".true." ]] || [[ "${DOIAU_COLDSTART_ATM:-NO}" == "YES" ]]; then
 
         #--------------------------------------------------------------------------
         if [[ "${RERUN}" == "YES" ]]; then
@@ -180,12 +178,18 @@ FV3_postdet() {
 EOF
             # Create a array of increment files
             local inc_files inc_file iaufhrs iaufhr
-            if [[ "${DOIAU}" == "YES" || "${DOIAU_COLDSTART:-NO}" == "YES" ]]; then
-                if [[ "${DOIAU_COLDSTART:-NO}" == "YES" ]]; then
-                    IAUFHRS=0,3,6
+            if [[ "${DOIAU}" == "YES" || "${DOIAU_COLDSTART_ATM:-NO}" == "YES" ]]; then
+                if [[ "${DOIAU_COLDSTART_ATM:-NO}" == "YES" ]]; then
+                    #IAUFHRS=0,3,6
                     IAU_DELTHRS=6
-                    DO_LAND_IAU=".true."
+                    IAUFHRS=0
                 fi
+                if [[ "${DOIAU_COLDSTART_LND:-NO}" == "YES" ]]; then
+                    DO_LAND_IAU=".true."
+	        else
+                    DO_LAND_IAU=".false."
+		fi
+
                 # create an array of inc_files for each IAU hour
                 IFS=',' read -ra iaufhrs <<< "${IAUFHRS}"
                 inc_files=()
@@ -249,7 +253,7 @@ EOF
                 fi
             fi
 
-            if [[ "${RUN}" == "enkfgfs" || "${RUN}" == "enkfgdas" ]] || [[ "${DOIAU_COLDSTART:-NO}" == "YES" && ${MEMBER} -gt 0 ]]; then
+            if [[ "${RUN}" == "enkfgfs" || "${RUN}" == "enkfgdas" ]] || [[ "${DOIAU_COLDSTART_ATM:-NO}" == "YES" && ${MEMBER} -gt 0 ]]; then
                 if [[ "${DOENKFONLY_ATM:-NO}" == "YES" ]]; then
                     prefix_atminc=""
                 else
@@ -313,6 +317,7 @@ EOF
         ncep_ic=".false."
         external_ic=".false."
         mountain=".true."
+	agrid_vel_rst=".false."
 
         # restarts contain non-hydrostatic state
         if [[ "${TYPE}" == "nh" ]]; then
@@ -667,7 +672,7 @@ MOM6_postdet() {
         restart_date="${RERUN_DATE}"
     else # "${RERUN}" == "NO"
         restart_dir="${COMIN_OCEAN_RESTART_PREV}"
-        if [[ "${DOIAU_COLDSTART:-NO}" == "YES" ]]; then
+        if [[ "${DOIAU_COLDSTART_OCN:-NO}" == "YES" ]]; then
             restart_date="${current_cycle_begin}"
         else
             restart_date="${model_start_date_current_cycle}"
@@ -690,7 +695,7 @@ MOM6_postdet() {
 
     # Copy increment (only when RERUN=NO)
     if [[ "${RERUN}" == "NO" ]]; then
-        if [[ "${DO_JEDIOCNVAR:-NO}" == "YES" ]] || [[ "${DOIAU_COLDSTART:-NO}" == "YES" ]] || [[ ${MEMBER} -gt 0 && "${ODA_INCUPD:-False}" == "True" ]]; then
+        if [[ "${DO_JEDIOCNVAR:-NO}" == "YES" ]] || [[ "${DOIAU_COLDSTART_OCN:-NO}" == "YES" ]] || [[ ${MEMBER} -gt 0 && "${ODA_INCUPD:-False}" == "True" ]]; then
             cpreq "${COMIN_OCEAN_ANALYSIS}/${RUN}.t${cyc}z.mom6_increment.i006.nc" "${DATA}/INPUT/mom6_increment.nc"
         fi
     fi # if [[ "${RERUN}" == "NO" ]]; then
@@ -888,16 +893,16 @@ CICE_postdet() {
         seconds=$(to_seconds "${restart_date:8:2}0000") # convert HHMMSS to seconds
         cice_restart_file="${DATArestart}/CICE_RESTART/cice_model.res.${restart_date:0:4}-${restart_date:4:2}-${restart_date:6:2}-${seconds}.nc"
     else # "${RERUN}" == "NO"
-        if [[ "${DOIAU_COLDSTART:-NO}" == "YES" ]]; then
+        if [[ "${DOIAU_COLDSTART_OCN:-NO}" == "YES" ]]; then
             restart_date="${current_cycle_begin}"
         else
             restart_date="${model_start_date_current_cycle}"
         fi
         cice_restart_file="${COMIN_ICE_RESTART_PREV}/${restart_date:0:8}.${restart_date:8:2}0000.cice_model.res.nc"
-        if [[ "${DOIAU_COLDSTART:-NO}" == "YES" ]]; then
+        if [[ "${DOIAU_COLDSTART_OCN:-NO}" == "YES" ]]; then
             cice_restart_file="${COMIN_ICE_ANALYSIS}/${restart_date:0:8}.${restart_date:8:2}0000.analysis.cice_model.res.nc"
         fi
-        if [[ "${DO_JEDIOCNVAR:-NO}" == "YES" || "${DOIAU_COLDSTART:-NO}" == "YES" ]]; then
+        if [[ "${DO_JEDIOCNVAR:-NO}" == "YES" || "${DOIAU_COLDSTART_OCN:-NO}" == "YES" ]]; then
             if [[ "${MEMBER}" -eq 0 ]]; then
                 # Start the deterministic from the JEDI/SOCA analysis if the Marine DA in ON
                 cice_restart_file="${COMIN_ICE_ANALYSIS}/${restart_date:0:8}.${restart_date:8:2}0000.analysis.cice_model.res.nc"

@@ -267,7 +267,7 @@ case ${step} in
     export ntasks=1
     export tasks_per_node=1
     export threads_per_task=1
-    export memory="96GB"
+    export memory="192GB"
     ;;
 
   "wavepostgridded")

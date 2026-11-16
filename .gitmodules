@@ -1,6 +1,6 @@
 [submodule "sorc/ufs_model.fd"]
   path = sorc/ufs_model.fd
-  url = https://github.com/NeilBarton-NOAA/ufs-weather-model
+  url = https://github.com/pjpegion/ufs-weather-model
   branch = SFSbeta3
 [submodule "sorc/wxflow"]
   path = sorc/wxflow

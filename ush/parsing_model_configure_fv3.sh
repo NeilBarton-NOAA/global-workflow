@@ -25,14 +25,14 @@ FV3_model_configure() {
     local model_start_date
     if [[ "${DOIAU:-NO}" == "YES" ]]; then
         local model_start_time="${previous_cycle}"
-    elif [[ "${DOIAU_COLDSTART:-NO}" == "YES" ]]; then
+    elif [[ "${DOIAU_COLDSTART_ATM:-NO}" == "YES" ]]; then
         local model_start_time="${model_start_date_current_cycle}"
     else
         local model_start_time="${current_cycle}"
     fi
     if [[ "${DOIAU}" == "YES" ]]; then
         model_start_date="${previous_cycle}"
-    elif [[ "${DOIAU_COLDSTART:-NO}" == "YES" ]]; then
+    elif [[ "${DOIAU_COLDSTART_ATM:-NO}" == "YES" ]]; then
         model_start_date="${model_start_date_current_cycle}"
     else
         model_start_date="${current_cycle}"

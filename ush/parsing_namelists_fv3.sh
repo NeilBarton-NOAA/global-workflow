@@ -338,7 +338,7 @@ FV3_namelists() {
         local PERT_CLDS=".true."
     fi
 
-    if [[ "${DOIAU}" = "YES" || "${DOIAU_COLDSTART:-NO}" == "YES" ]]; then
+    if [[ "${DOIAU}" = "YES" || "${DOIAU_COLDSTART_ATM:-NO}" == "YES" ]]; then
         local HIDE_AIAU=" "
     else
         local HIDE_AIAU="!"

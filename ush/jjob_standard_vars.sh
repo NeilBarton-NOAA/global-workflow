@@ -35,6 +35,9 @@ _start_time_human=$(date -d"@${start_time}" -u +%H:%M:%S)
 _calling_script=${_calling_script:-$(basename "${BASH_SOURCE[1]}")}
 echo "Begin ${_calling_script} at ${_start_time_human}"
 
+# avoid conflict when running post jobs
+unset SLURM_MEM_PER_CPU
+
 ##############################################
 # Debug trace format
 ##############################################

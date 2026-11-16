@@ -19,6 +19,8 @@ UFS_det() {
     if [[ -f "${COMIN_ATMOS_RESTART_PREV}/${model_start_date_current_cycle:0:8}.${model_start_date_current_cycle:8:2}0000.coupler.res" ]]; then
         warm_start=".true."
     fi
+    # set the default IAU_OFFSET to zero, this is needed for warm starting for SFS
+    IAU_OFFSET=0
 
     # If restarts were not available, this is likely a cold start
     if [[ "${warm_start}" == ".false." ]]; then
@@ -32,7 +34,7 @@ UFS_det() {
         fi
 
         # Check if we are doing a cold start IAU
-        if [[ ${DOIAU_COLDSTART:-"NO"} == "NO" ]]; then
+        if [[ ${DOIAU_COLDSTART_ATM:-"NO"} == "NO" ]]; then
             DOIAU="NO"
             IAU_OFFSET=0
             model_start_date_current_cycle=${current_cycle}
